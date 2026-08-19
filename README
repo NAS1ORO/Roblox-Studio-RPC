@@ -1,10 +1,10 @@
-# Roblox Studio Discord Rich Presence (Zapret-Style)
+# Roblox Studio Discord Rich Presence
 
 A lightweight, standalone Python-based utility that displays your current development status in **Roblox Studio** directly on your Discord profile. It features an interactive command-line interface for configuration and supports seamless, invisible background execution on Windows startup.
 
 ## Features
 
-- 🛠 **Zapret-Style CLI:** An interactive text menu to manage all app configurations instantly.
+- 🛠 **CMD Style:** An interactive text menu to manage all app configurations instantly.
 - 🚀 **Silent Autofun:** Registers the executable to the Windows Registry with a hidden flag (`--background`), executing with zero terminal windows shown on boot.
 - 🖼 **Dynamic Place Assets:** Map specific Roblox Studio place names to custom image URLs on the fly.
 - 🔄 **Hot-Reloading:** The background worker re-reads the local JSON configuration every 3 seconds—no manual restarts required when updates are made.
