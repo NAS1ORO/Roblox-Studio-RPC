@@ -55,6 +55,11 @@ def set_autorun(status):
         print(f"Registry modification error: {e}")
         return False
 
+def hide_console():
+    hwnd = ctypes.windll.kernel32.GetConsoleWindow()
+    if hwnd != 0:
+        ctypes.windll.user32.ShowWindow(hwnd, 0)
+
 def run_rpc_background():
     config = load_config()
     CLIENT_ID = config.get("CLIENT_ID", "1539562410644611122")
@@ -214,9 +219,7 @@ def run_images_menu():
 
 if __name__ == "__main__":
     if "--background" in sys.argv:
+        hide_console()
         run_rpc_background()
     else:
-        ctypes.windll.kernel32.AllocConsole()
-        sys.stdout = open(sys.fileinput if hasattr(sys, 'fileinput') else 'CONOUT$', 'w')
-        sys.stdin = open('CONIN$', 'r')
         run_menu()
