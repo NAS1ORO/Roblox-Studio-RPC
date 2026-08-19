@@ -27,6 +27,20 @@ pip install pypresence pygetwindow
 pip install pyinstaller
 ```
 
+---
+
+## 🛡️ Antivirus Notice (False Positives)
+
+Since the standalone executable is compiled using **PyInstaller**, certain antivirus engines (including Microsoft Defender) may flag the binary as a false positive (e.g., *Trojan:Win32/Wacatac* or *Suspicious PE*). 
+
+### Why does this happen?
+1. **Packaging Mechanism:** PyInstaller bundles the entire Python interpreter, dependent libraries (`pypresence`, `pygetwindow`), and the core script into a single compressed binary that extracts itself into the temporary directory at runtime. Security software often flags this unpacking behavior as suspicious.
+2. **Registry Interaction:** The built-in automated startup wrapper modifies the `CurrentVersion\Run` registry path to enable background silent execution. Unsigned binaries attempting to change boot sequences naturally trigger heuristic AI detection alerts.
+
+### Verification
+This project is **100% open-source**. You can fully inspect the raw, uncompiled logic inside `Module.py`. If you want to avoid false positive triggers completely, you can run the source code directly via the Python interpreter instead of executing the pre-built `.exe`.
+
+
 ### ⚠️ Building the Executable
 To package the tool into a clean standalone application with a custom icon, use the following compilation setup (replace `icon.ico` with your asset file name):
 
