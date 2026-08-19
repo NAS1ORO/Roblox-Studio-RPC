@@ -218,7 +218,9 @@ def run_images_menu():
             break
 
 if __name__ == "__main__":
-    if "--background" in sys.argv:
+    cleaned_args = [arg.strip().replace('"', '').replace("'", "").lower() for arg in sys.argv]
+    
+    if "--background" in cleaned_args:
         hide_console()
         run_rpc_background()
     else:
