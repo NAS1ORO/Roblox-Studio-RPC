@@ -52,11 +52,10 @@ def set_autorun(status):
         print(f"Registry modification error: {e}")
         return False
 
-# Скрытие консольного окна для фонового режима
 def hide_console():
     hwnd = ctypes.windll.kernel32.GetConsoleWindow()
     if hwnd != 0:
-        ctypes.windll.user32.ShowWindow(hwnd, 0) # 0 = SW_HIDE (Скрыть)
+        ctypes.windll.user32.ShowWindow(hwnd, 0)
 
 def run_rpc_background():
     config = load_config()
@@ -236,9 +235,7 @@ def run_images_menu():
 
 if __name__ == "__main__":
     if "--background" in sys.argv:
-        # Если запущен из автозагрузки — мгновенно прячем консоль от пользователя
         hide_console()
         run_rpc_background()
     else:
-        # Если запустили вручную — показываем меню настройки
         run_menu()
