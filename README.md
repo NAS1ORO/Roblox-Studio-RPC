@@ -5,7 +5,7 @@ A lightweight, standalone Python-based utility that displays your current develo
 ## ⚡ Features
 
 - 🛠 **CMD-Style CLI:** An interactive text menu to manage all app configurations instantly.
-- 🚀 **Silent Autofun:** Registers the executable to the Windows Registry with a hidden flag (`--background`), executing with zero terminal windows shown on boot.
+- 🚀 **Silent Autorun:** Registers the executable to the Windows Registry with a hidden flag (`--background`), executing with zero terminal windows shown on boot.
 - 🖼 **Dynamic Place Assets:** Map specific Roblox Studio place names to custom image URLs on the fly.
 - 🔄 **Hot-Reloading:** The background worker re-reads the local JSON configuration every 3 seconds—no manual restarts required when updates are made.
 
