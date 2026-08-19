@@ -21,7 +21,6 @@ DEFAULT_CONFIG = {
 def load_config():
     exe_dir = os.path.dirname(os.path.abspath(sys.executable))
     config_path = os.path.join(exe_dir, CONFIG_FILE)
-    
     if not os.path.exists(config_path):
         with open(config_path, "w", encoding="utf-8") as f:
             json.dump(DEFAULT_CONFIG, f, indent=4, ensure_ascii=False)
@@ -56,32 +55,22 @@ def set_autorun(status):
         print(f"Registry modification error: {e}")
         return False
 
-def hide_console():
-    hwnd = ctypes.windll.kernel32.GetConsoleWindow()
-    if hwnd != 0:
-        ctypes.windll.user32.ShowWindow(hwnd, 0)
-
 def run_rpc_background():
     config = load_config()
     CLIENT_ID = config.get("CLIENT_ID", "1539562410644611122")
     DEFAULT_IMAGE = config.get("DEFAULT_IMAGE", "app")
-    
     RPC = Presence(CLIENT_ID)
     rpc_connected = False
-
     try:
         RPC.connect()
         rpc_connected = True
     except:
         pass
-
     last_title = ""
     start_time = None
-
     while True:
         config = load_config()
         PLACE_IMAGES = config.get("PLACE_IMAGES", {})
-
         if not rpc_connected:
             try:
                 RPC.connect()
@@ -89,12 +78,10 @@ def run_rpc_background():
             except:
                 time.sleep(5)
                 continue
-
         try:
             studio_windows = [w for w in gw.getAllWindows() if "Roblox Studio" in w.title]
         except:
             studio_windows = []
-        
         if studio_windows:
             window = studio_windows[0]
             try:
@@ -102,13 +89,10 @@ def run_rpc_background():
             except:
                 time.sleep(3)
                 continue
-            
             if full_title != last_title:
                 last_title = full_title
                 start_time = time.time()
-                
                 place_name = full_title.replace(" - Roblox Studio", "").strip()
-                
                 if place_name == "" or place_name == "Roblox Studio":
                     place_name = "Main menu"
                     state = "In menu"
@@ -119,7 +103,6 @@ def run_rpc_background():
                         large_image = PLACE_IMAGES[place_name]
                     else:
                         large_image = DEFAULT_IMAGE
-                
                 try:
                     RPC.update(
                         details=f"{place_name}",
@@ -138,14 +121,12 @@ def run_rpc_background():
                     pass
                 last_title = ""
                 start_time = None
-
         time.sleep(3)
 
 def run_menu():
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         config = load_config()
-        
         print("="*40)
         print("  ROBLOX STUDIO RPC - SETTINGS")
         print("="*40)
@@ -155,9 +136,7 @@ def run_menu():
         print("3. Start RPC immediately (in this window)")
         print("0. Exit")
         print("="*40)
-        
         choice = input("Select an option: ").strip()
-        
         if choice == "1":
             ans = input("Enable hidden background startup on Windows boot? (y/n): ").strip().lower()
             if ans == 'y':
@@ -173,14 +152,11 @@ def run_menu():
             else:
                 print("Invalid input.")
             time.sleep(1.5)
-            
         elif choice == "2":
             run_images_menu()
-            
         elif choice == "3":
             print("\nStarting RPC... Close this terminal window to stop.")
             run_rpc_background()
-            
         elif choice == "0":
             break
 
@@ -189,7 +165,6 @@ def run_images_menu():
         os.system('cls' if os.name == 'nt' else 'clear')
         config = load_config()
         images = config.get("PLACE_IMAGES", {})
-        
         print("="*40)
         print("  ASSET IMAGE CONFIGURATION")
         print("="*40)
@@ -197,32 +172,26 @@ def run_images_menu():
         print("2. Remove image asset")
         print("0. Back")
         print("="*40)
-        
         choice = input("Select an action: ").strip()
-        
         if choice == "1":
             place_name = input("Enter exact place name (as seen in Studio): ").strip()
             if not place_name: continue
             img_url = input("Enter direct image link/key: ").strip()
             if not img_url: continue
-            
             images[place_name] = img_url
             config["PLACE_IMAGES"] = images
             save_config(config)
             print("[+] Asset added and saved successfully!")
             time.sleep(1.5)
-            
         elif choice == "2":
             if not images:
                 print("The asset list is completely empty.")
                 time.sleep(1.5)
                 continue
-                
             print("\nList of configured places:")
             img_list = list(images.keys())
             for idx, name in enumerate(img_list, 1):
                 print(f"{idx}. {name} -> {images[name][:40]}...")
-                
             try:
                 num = int(input("\nEnter the index number to delete: ").strip())
                 if 1 <= num <= len(img_list):
@@ -240,13 +209,14 @@ def run_images_menu():
             except ValueError:
                 print("Please enter a valid numeric value.")
             time.sleep(1.5)
-            
         elif choice == "0":
             break
 
 if __name__ == "__main__":
     if "--background" in sys.argv:
-        hide_console()
         run_rpc_background()
     else:
+        ctypes.windll.kernel32.AllocConsole()
+        sys.stdout = open(sys.fileinput if hasattr(sys, 'fileinput') else 'CONOUT$', 'w')
+        sys.stdin = open('CONIN$', 'r')
         run_menu()
