@@ -18,7 +18,7 @@ Since a compiled `.exe` cannot overwrite its own binary contents, settings are s
 ## 📥 Download
 
 You can download the compiled standalone application from the official release page:
-👉 **[Download Roblox Studio RPC v0.8.2]([https://github.com/NAS1ORO/Roblox-Studio-RPC/releases/tag/0.8.5]**
+👉 **[Download Roblox Studio RPC v0.8.2]([https://github.com/NAS1ORO/Roblox-Studio-RPC/releases/tag/0.8.5])**
 
 ### 🛑 Prerequisites
 Make sure you have Python installed and the required dependencies fetched:
