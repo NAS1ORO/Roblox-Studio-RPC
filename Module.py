@@ -15,27 +15,31 @@ DEFAULT_CONFIG = {
     "CLIENT_ID": "1539562410644611122",
     "DEFAULT_IMAGE": "app",
     "AUTORUN": False,
-    "PLACE_IMAGES": {
-    }
+    "PLACE_IMAGES": {}
 }
 
 def load_config():
-    if not os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+    exe_dir = os.path.dirname(os.path.abspath(sys.executable))
+    config_path = os.path.join(exe_dir, CONFIG_FILE)
+    
+    if not os.path.exists(config_path):
+        with open(config_path, "w", encoding="utf-8") as f:
             json.dump(DEFAULT_CONFIG, f, indent=4, ensure_ascii=False)
         return DEFAULT_CONFIG
     try:
-        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+        with open(config_path, "r", encoding="utf-8") as f:
             return json.load(f)
     except:
         return DEFAULT_CONFIG
 
 def save_config(config):
-    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+    exe_dir = os.path.dirname(os.path.abspath(sys.executable))
+    config_path = os.path.join(exe_dir, CONFIG_FILE)
+    with open(config_path, "w", encoding="utf-8") as f:
         json.dump(config, f, indent=4, ensure_ascii=False)
 
 def set_autorun(status):
-    exe_path = os.path.abspath(sys.argv[0])
+    exe_path = os.path.abspath(sys.executable)
     cmd = f'"{exe_path}" --background'
     try:
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, REG_KEY, 0, winreg.KEY_SET_VALUE)
@@ -86,12 +90,18 @@ def run_rpc_background():
                 time.sleep(5)
                 continue
 
-        # Находим все открытые окна Roblox Studio
-        studio_windows = [w for w in gw.getAllWindows() if "Roblox Studio" in w.title]
+        try:
+            studio_windows = [w for w in gw.getAllWindows() if "Roblox Studio" in w.title]
+        except:
+            studio_windows = []
         
         if studio_windows:
-            window = studio_windows[0]  # <- ИСПРАВЛЕНО: берем первое активное окно
-            full_title = window.title
+            window = studio_windows[0]
+            try:
+                full_title = window.title
+            except:
+                time.sleep(3)
+                continue
             
             if full_title != last_title:
                 last_title = full_title
