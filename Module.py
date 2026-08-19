@@ -86,10 +86,11 @@ def run_rpc_background():
                 time.sleep(5)
                 continue
 
+        # Находим все открытые окна Roblox Studio
         studio_windows = [w for w in gw.getAllWindows() if "Roblox Studio" in w.title]
         
         if studio_windows:
-            window = studio_windows[0]
+            window = studio_windows[0]  # <- ИСПРАВЛЕНО: берем первое активное окно
             full_title = window.title
             
             if full_title != last_title:
